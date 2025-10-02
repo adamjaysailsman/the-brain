@@ -1,5 +1,10 @@
 import { useState } from "react";
+import { CheckIcon } from "@heroicons/react/20/solid";
 import { questions } from "./questions";
+
+function classNames(...classes) {
+  return classes.filter(Boolean).join(" ");
+}
 
 function App() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -9,15 +14,27 @@ function App() {
 
   const currentQuestion = questions[currentQuestionIndex];
 
+  // Create steps array based on questions
+  const steps = questions.map((question, index) => {
+    let status = "upcoming";
+    if (index < currentQuestionIndex) {
+      status = "complete";
+    } else if (index === currentQuestionIndex) {
+      status = "current";
+    }
+    return {
+      name: `Question ${index + 1}`,
+      status: status,
+    };
+  });
+
   const handleAnswerSubmit = () => {
     if (!selectedAnswer) return;
 
-    // Check if answer is correct
     if (selectedAnswer === currentQuestion.correctAnswer) {
       setScore(score + 1);
     }
 
-    // Move to next question or finish
     setTimeout(() => {
       const nextQuestion = currentQuestionIndex + 1;
 
@@ -37,7 +54,6 @@ function App() {
     setSelectedAnswer(null);
   };
 
-  // Results screen
   if (isFinished) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-4">
@@ -62,10 +78,77 @@ function App() {
     );
   }
 
-  // Main game screen with Tailwind UI radio group
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-4">
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 max-w-2xl w-full">
+        {/* Progress Bar */}
+        <nav aria-label="Progress" className="mb-8">
+          <ol role="list" className="flex items-center">
+            {steps.map((step, stepIdx) => (
+              <li
+                key={step.name}
+                className={classNames(
+                  stepIdx !== steps.length - 1 ? "pr-8 sm:pr-20" : "",
+                  "relative"
+                )}
+              >
+                {step.status === "complete" ? (
+                  <>
+                    <div
+                      aria-hidden="true"
+                      className="absolute inset-0 flex items-center"
+                    >
+                      <div className="h-0.5 w-full bg-indigo-600 dark:bg-indigo-500" />
+                    </div>
+                    <div className="relative flex size-8 items-center justify-center rounded-full bg-indigo-600 dark:bg-indigo-500">
+                      <CheckIcon
+                        aria-hidden="true"
+                        className="size-5 text-white"
+                      />
+                      <span className="sr-only">{step.name}</span>
+                    </div>
+                  </>
+                ) : step.status === "current" ? (
+                  <>
+                    <div
+                      aria-hidden="true"
+                      className="absolute inset-0 flex items-center"
+                    >
+                      <div className="h-0.5 w-full bg-gray-200 dark:bg-white/15" />
+                    </div>
+                    <div
+                      aria-current="step"
+                      className="relative flex size-8 items-center justify-center rounded-full border-2 border-indigo-600 bg-white dark:border-indigo-500 dark:bg-gray-900"
+                    >
+                      <span
+                        aria-hidden="true"
+                        className="size-2.5 rounded-full bg-indigo-600 dark:bg-indigo-500"
+                      />
+                      <span className="sr-only">{step.name}</span>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div
+                      aria-hidden="true"
+                      className="absolute inset-0 flex items-center"
+                    >
+                      <div className="h-0.5 w-full bg-gray-200 dark:bg-white/15" />
+                    </div>
+                    <div className="relative flex size-8 items-center justify-center rounded-full border-2 border-gray-300 bg-white dark:border-white/15 dark:bg-gray-900">
+                      <span
+                        aria-hidden="true"
+                        className="size-2.5 rounded-full bg-transparent"
+                      />
+                      <span className="sr-only">{step.name}</span>
+                    </div>
+                  </>
+                )}
+              </li>
+            ))}
+          </ol>
+        </nav>
+
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
           <div className="text-sm font-semibold text-gray-600 dark:text-gray-400">
