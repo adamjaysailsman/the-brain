@@ -130,6 +130,7 @@ function App() {
         totalQuestions={questions.length}
         coins={coins}
         currentBet={currentBet}
+        currentQuestion={currentQuestion}
         onBetChange={setCurrentBet}
         onPlaceBet={handlePlaceBet}
       />

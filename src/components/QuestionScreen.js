@@ -13,19 +13,23 @@ export default function QuestionScreen({
   onSubmit,
 }) {
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 max-w-2xl w-full">
-        <ProgressBar steps={steps} />
+    <div className="min-h-screen bg-beige flex items-center justify-center p-4">
+      <div className="bg-green rounded-lg shadow-lg p-8 max-w-2xl w-full">
+        <ProgressBar
+          steps={steps}
+          currentQuestionIndex={currentQuestionIndex}
+          totalQuestions={totalQuestions}
+        />
 
         <div className="flex justify-between items-center mb-6">
-          <div className="text-sm font-semibold text-gray-600 dark:text-gray-400">
+          <div className="text-sm font-semibold text-beige">
             Question {currentQuestionIndex + 1} of {totalQuestions}
           </div>
           <div className="flex items-center gap-4">
-            <div className="text-sm font-semibold text-yellow-600 dark:text-yellow-500">
+            <div className="text-sm font-semibold text-[#F4EBBE] bg-[#75704E] px-3 py-1 rounded-full">
               💰 {coins} coins
             </div>
-            <div className="text-sm font-semibold text-indigo-600 dark:text-indigo-500">
+            <div className="text-sm font-semibold text-[#75704E] border-2 border-[#75704E] px-3 py-1 rounded-full">
               Bet: {currentBet}
             </div>
           </div>
@@ -35,15 +39,15 @@ export default function QuestionScreen({
           <div
             className={`mb-6 p-4 rounded-lg ${
               selectedAnswer === currentQuestion.correctAnswer
-                ? "bg-green-50 dark:bg-green-900/20 border-2 border-green-500"
-                : "bg-red-50 dark:bg-red-900/20 border-2 border-red-500"
+                ? "bg-gray border-2 border-beige"
+                : "bg-red-50  border-2 border-red-500"
             }`}
           >
             <p
               className={`text-center font-semibold ${
                 selectedAnswer === currentQuestion.correctAnswer
-                  ? "text-green-700 dark:text-green-400"
-                  : "text-red-700 dark:text-red-400"
+                  ? "text-beige"
+                  : "text-gray"
               }`}
             >
               {selectedAnswer === currentQuestion.correctAnswer
@@ -54,16 +58,16 @@ export default function QuestionScreen({
         )}
 
         <fieldset>
-          <legend className="text-2xl font-semibold text-gray-900 dark:text-white mb-2">
+          <legend className="text-2xl font-semibold text-beige mb-2">
             {currentQuestion.question}
           </legend>
-          <p className="mt-1 text-sm/6 text-gray-600 dark:text-gray-400 mb-6">
+          {/* <p className="mt-1 text-sm/6 text-[#8BA6A9] dark:text-gray-400 mb-6">
             Select your answer below
-          </p>
+          </p> */}
           <div className="mt-6 space-y-6">
             {currentQuestion.options.map((option) => {
               let inputClass =
-                "relative size-4 appearance-none rounded-full border border-gray-300 bg-white before:absolute before:inset-1 before:rounded-full before:bg-white checked:border-indigo-600 checked:bg-indigo-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:before:bg-gray-400 dark:border-white/10 dark:bg-white/5 dark:checked:border-indigo-500 dark:checked:bg-indigo-500 dark:focus-visible:outline-indigo-500 dark:disabled:border-white/5 dark:disabled:bg-white/10 dark:disabled:before:bg-white/20 forced-colors:appearance-auto forced-colors:before:hidden [&:not(:checked)]:before:hidden";
+                "relative size-4 appearance-none rounded-full border-2 border-[#8BA6A9] bg-white before:absolute before:inset-1 before:rounded-full before:bg-white checked:border-[#75704E] checked:bg-[#75704E] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#75704E] disabled:border-gray-300 disabled:bg-gray-100 disabled:before:bg-gray-400 forced-colors:appearance-auto forced-colors:before:hidden [&:not(:checked)]:before:hidden";
 
               let labelClass =
                 "ml-3 block text-sm/6 font-medium text-gray-900 dark:text-white cursor-pointer";
@@ -106,7 +110,7 @@ export default function QuestionScreen({
           <button
             onClick={onSubmit}
             disabled={!selectedAnswer || showFeedback}
-            className="w-full rounded-md bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:bg-gray-300 disabled:cursor-not-allowed dark:disabled:bg-gray-700"
+            className="w-full rounded-md bg-gray px-6 py-3 text-sm font-semibold text-beige shadow-sm hover:bg-gray focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#75704E] disabled:bg-gray-300 disabled:cursor-not-allowed dark:disabled:bg-gray-700"
           >
             {showFeedback
               ? "Next question..."
